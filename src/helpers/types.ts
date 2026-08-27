@@ -21,13 +21,12 @@ export interface User {
   id: string
   username: string
   passwordHash: string
-  salt: string
   createdAt: string // ISO 8601 string
   updatedAt: string
 }
 
 // Fields provided when creating a user.
-export type CreateUser = Pick<User, "username" | "passwordHash" | "salt">
+export type CreateUser = Pick<User, "username" | "passwordHash">
 
 export interface Task {
   id: string
