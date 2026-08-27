@@ -137,7 +137,7 @@ function CalendarCell(props: AriaCalendarCellProps) {
       {...props}
       className={composeRenderProps(props.className, (className, rp) =>
         cn(
-          "text-secondary text-sm font-normal",
+          "text-secondary cursor-pointer text-sm font-normal",
           "relative m-0.5 flex items-center justify-center",
           "size-9 rounded-full",
           "outline-brand outline-2 outline-offset-4 outline-none",

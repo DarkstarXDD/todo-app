@@ -12,8 +12,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/base/Modal"
+import { PriorityChip } from "@/components/base/PriorityChip"
 import TodoForm from "@/components/Tasks/TodoForm"
 import { toggleTaskCompleted, deleteTask } from "@/db/tasks"
+import { cn } from "@/lib/utils"
 
 export default function TodoItem({ task }: { task: Task }) {
   const [isEditOpen, setIsEditOpen] = useState(false)
@@ -28,13 +30,14 @@ export default function TodoItem({ task }: { task: Task }) {
             toggleTaskCompleted({ taskId: task.id, isCompleted })
           }
         >
-          {({ isSelected }) =>
-            isSelected ? (
-              <span className="line-through">{task.title}</span>
-            ) : (
-              <>{task.title}</>
-            )
-          }
+          {({ isSelected }) => (
+            <span className="flex gap-2">
+              <span className={cn(isSelected && "line-through")}>
+                {task.title}
+              </span>
+              {task.priority && <PriorityChip priority={task.priority} />}
+            </span>
+          )}
         </Checkbox>
 
         <MenuTrigger>
