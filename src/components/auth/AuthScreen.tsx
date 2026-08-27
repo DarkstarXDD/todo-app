@@ -63,7 +63,7 @@ function AuthScreen() {
             variant="brand"
             type="submit"
             isDisabled={isSubmitting}
-            className="mt-2"
+            className="mt-2 w-full"
           >
             {isSubmitting
               ? "Please wait…"
