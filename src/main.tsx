@@ -4,11 +4,14 @@ import { createRoot } from "react-dom/client"
 
 import "@/styles.css"
 import App from "@/App.tsx"
+import { AuthProvider } from "@/context/AuthContext"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <NuqsAdapter>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </NuqsAdapter>
   </StrictMode>
 )

@@ -13,7 +13,7 @@ import {
   DialogDescription,
 } from "@/components/base/Modal"
 import { PriorityChip } from "@/components/base/PriorityChip"
-import TodoForm from "@/components/tasks/TaskForm"
+import TodoForm from "@/components/todos/TaskForm"
 import { toggleTaskCompleted, deleteTask } from "@/db/tasks"
 import { cn } from "@/lib/utils"
 

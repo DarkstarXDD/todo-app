@@ -1,6 +1,7 @@
 import { useLiveQuery } from "dexie-react-hooks"
-import { Plus, CalendarCheck } from "lucide-react"
+import { Plus, CalendarCheck, LogOut } from "lucide-react"
 
+import AuthScreen from "@/components/auth/AuthScreen"
 import { Button } from "@/components/base/Button"
 import {
   Dialog,
@@ -10,17 +11,22 @@ import {
   Modal,
   ModalTrigger,
 } from "@/components/base/Modal"
-import TodoForm from "@/components/tasks/TaskForm"
-import TodoItem from "@/components/tasks/TaskItem"
-import ToolBar from "@/components/tasks/ToolBar"
+import TodoForm from "@/components/todos/TaskForm"
+import TodoItem from "@/components/todos/TaskItem"
+import ToolBar from "@/components/todos/ToolBar"
+import { useAuth } from "@/context/AuthContext"
 import { getTasksForUser } from "@/db/tasks"
 import { applyTaskFilters } from "@/helpers/tasks"
 import { useTaskFilters } from "@/hooks/useTaskFilters"
-import { DEV_USER_ID } from "@/lib/currentUser"
 
 export default function App() {
+  const { user, isLoading, signOut } = useAuth()
+
   const tasks =
-    useLiveQuery(() => getTasksForUser({ userId: DEV_USER_ID })) ?? []
+    useLiveQuery(
+      () => (user ? getTasksForUser({ userId: user.id }) : []),
+      [user?.id]
+    ) ?? []
 
   const { search, sort, priority, hideCompleted } = useTaskFilters()
 
@@ -32,8 +38,29 @@ export default function App() {
   })
   const remainingTaskCount = tasks.filter((task) => !task.completed).length
 
+  if (isLoading) {
+    return (
+      <div className="text-tertiary grid min-h-dvh place-items-center text-sm">
+        Loading…
+      </div>
+    )
+  }
+
+  if (!user) return <AuthScreen />
+
   return (
     <div>
+      <header className="mx-auto flex max-w-2xl items-center justify-between py-4">
+        <span className="text-tertiary text-sm">
+          Signed in as{" "}
+          <span className="text-secondary font-medium">{user.username}</span>
+        </span>
+        <Button variant="ghost" onPress={signOut}>
+          <LogOut />
+          Sign out
+        </Button>
+      </header>
+
       <main className="mx-auto grid max-w-2xl gap-8">
         <div className="flex items-start justify-between">
           <div>
@@ -66,7 +93,7 @@ export default function App() {
                     <DialogDescription>
                       Fill in the details to add a task.
                     </DialogDescription>
-                    <TodoForm userId={DEV_USER_ID} onClose={close} />
+                    <TodoForm userId={user.id} onClose={close} />
                   </>
                 )}
               </Dialog>
