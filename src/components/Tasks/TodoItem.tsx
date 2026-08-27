@@ -1,4 +1,4 @@
-import { EllipsisVertical, Trash, Pencil } from "lucide-react"
+import { EllipsisVertical, Trash, Pencil, CalendarDays } from "lucide-react"
 import { useState } from "react"
 
 import type { Task } from "@/helpers/types"
@@ -23,22 +23,40 @@ export default function TodoItem({ task }: { task: Task }) {
   return (
     <div className="border-secondary rounded-lg border p-4 shadow-xs">
       <div className="flex items-center justify-between gap-4">
-        <Checkbox
-          description={task.description}
-          isSelected={task.completed}
-          onChange={(isCompleted) =>
-            toggleTaskCompleted({ taskId: task.id, isCompleted })
-          }
-        >
-          {({ isSelected }) => (
-            <span className="flex gap-2">
+        <div className="grid gap-3">
+          <Checkbox
+            description={task.description}
+            isSelected={task.completed}
+            onChange={(isCompleted) =>
+              toggleTaskCompleted({ taskId: task.id, isCompleted })
+            }
+          >
+            {({ isSelected }) => (
               <span className={cn(isSelected && "line-through")}>
                 {task.title}
               </span>
-              {task.priority && <PriorityChip priority={task.priority} />}
-            </span>
-          )}
-        </Checkbox>
+            )}
+          </Checkbox>
+
+          <span className="flex gap-2">
+            {task.priority && <PriorityChip priority={task.priority} />}
+            {task.dueDate && (
+              <span className="flex items-center gap-1">
+                <CalendarDays className="text-tertiary/40" />
+                <p className="text-tertiary text-xs font-medium">
+                  {new Date(`${task.dueDate}T00:00:00`).toLocaleDateString(
+                    undefined,
+                    {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }
+                  )}
+                </p>
+              </span>
+            )}
+          </span>
+        </div>
 
         <MenuTrigger>
           <Button aria-label="edit" variant="ghost">

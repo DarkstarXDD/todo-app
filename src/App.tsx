@@ -10,7 +10,6 @@ import {
   Modal,
   ModalTrigger,
 } from "@/components/base/Modal"
-import { PriorityChip } from "@/components/base/PriorityChip"
 import TodoForm from "@/components/Tasks/TodoForm"
 import TodoItem from "@/components/Tasks/TodoItem"
 import ToolBar from "@/components/Tasks/ToolBar"

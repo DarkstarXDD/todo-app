@@ -1,3 +1,4 @@
+import { parseDate } from "@internationalized/date"
 import React from "react"
 
 import type { Task, Priority } from "@/helpers/types"
@@ -24,11 +25,14 @@ function TodoForm({ userId, task, onClose }: TodoFormProps) {
     const title = String(formData.get("title") ?? "").trim()
     const description = String(formData.get("description") ?? "").trim()
     const priority = formData.get("priority") as Priority | null
+    // DatePicker submits an ISO 8601 string (empty when no date is chosen).
+    const dueDate = formData.get("dueDate") as string | null
 
     const taskData = {
       title,
       description: description || undefined,
       priority: priority || undefined,
+      dueDate: dueDate || undefined,
     }
 
     if (task) {
@@ -56,7 +60,11 @@ function TodoForm({ userId, task, onClose }: TodoFormProps) {
         defaultValue={task?.description}
       />
 
-      <DatePicker name="dueDate" label="Due Date" />
+      <DatePicker
+        name="dueDate"
+        label="Due Date"
+        defaultValue={task?.dueDate ? parseDate(task.dueDate) : undefined}
+      />
 
       <RadioGroup
         name="priority"
