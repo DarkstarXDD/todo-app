@@ -1,3 +1,4 @@
+import { useLiveQuery } from "dexie-react-hooks"
 import { Plus, CalendarCheck } from "lucide-react"
 
 import { Button } from "@/components/base/Button"
@@ -12,14 +13,17 @@ import {
 import TodoForm from "@/components/Tasks/TodoForm"
 import TodoItem from "@/components/Tasks/TodoItem"
 import ToolBar from "@/components/Tasks/ToolBar"
-import { initialTodos } from "@/helpers/data"
-
-function handleAddTodo() {
-  console.log("Todo Handled!")
-}
+import { getTasksForUser } from "@/db/tasks"
+import { applyTaskFilters } from "@/helpers/tasks"
+import { useTaskFilters } from "@/hooks/useTaskFilters"
+import { DEV_USER_ID } from "@/lib/currentUser"
 
 export default function App() {
-  const remainingTaskCount = 4
+  const tasks = useLiveQuery(() => getTasksForUser({ userId: DEV_USER_ID })) ?? []
+  const { search, sort, priority } = useTaskFilters()
+
+  const visibleTasks = applyTaskFilters(tasks, { search, sort, priority })
+  const remainingTaskCount = tasks.filter((task) => !task.completed).length
 
   return (
     <div>
@@ -55,7 +59,7 @@ export default function App() {
                     <DialogDescription>
                       Fill in the details to add a task.
                     </DialogDescription>
-                    <TodoForm onAddTodo={handleAddTodo} onClose={close} />
+                    <TodoForm userId={DEV_USER_ID} onClose={close} />
                   </>
                 )}
               </Dialog>
@@ -66,13 +70,13 @@ export default function App() {
         <ToolBar />
 
         <div className="grid gap-2">
-          {initialTodos.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              taskTitle={todo.taskTitle}
-              taskDescription={todo.taskDescription}
-            />
-          ))}
+          {visibleTasks.length > 0 ? (
+            visibleTasks.map((task) => <TodoItem key={task.id} task={task} />)
+          ) : (
+            <p className="text-tertiary py-8 text-center text-sm">
+              No tasks to show.
+            </p>
+          )}
         </div>
       </main>
     </div>

@@ -1,57 +1,66 @@
 import React from "react"
 
-import type { Todo } from "@/helpers/types"
+import type { Task, Priority } from "@/helpers/types"
 
-// import { todoSchema } from "@/app/examples/todo/helpers/schemas"
 import { Button } from "@/components/base/Button"
-// import { DatePicker } from "@/components/base/DatePicker"
 import { RadioGroup, Radio } from "@/components/base/RadioGroup"
 import { TextAreaField } from "@/components/base/TextArea"
 import { TextField } from "@/components/base/TextField"
+import { createTask, updateTask } from "@/db/tasks"
 
 interface TodoFormProps {
-  onAddTodo?: (todo: Todo) => void
+  userId: string
+  /** When present, the form edits this task instead of creating one */
+  task?: Task
   onClose?: () => void
 }
 
-function TodoForm({ onClose }: TodoFormProps) {
-  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
-    const formData = new FormData(e.currentTarget)
-    const data = Object.fromEntries(formData)
-    console.log(data)
-    // const parsed = todoSchema.safeParse(data)
+function TodoForm({ userId, task, onClose }: TodoFormProps) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault()
 
-    // if (parsed.success) {
-    //   console.log(parsed.data)
-    // } else {
-    //   console.log(parsed.error)
-    // }
+    const formData = new FormData(e.currentTarget)
+    const title = String(formData.get("title") ?? "").trim()
+    const description = String(formData.get("description") ?? "").trim()
+    const priority = formData.get("priority") as Priority | null
+
+    const taskData = {
+      title,
+      description: description || undefined,
+      priority: priority || undefined,
+    }
+
+    if (task) {
+      await updateTask({ taskId: task.id, taskData })
+    } else {
+      await createTask({ userId, taskData })
+    }
+
     onClose?.()
   }
 
   return (
-    <form
-      className="mt-5 grid gap-4"
-      onSubmit={(e) => {
-        e.preventDefault()
-        handleSubmit(e)
-      }}
-    >
+    <form className="mt-5 grid gap-4" onSubmit={handleSubmit}>
       <TextField
         name="title"
         label="Title"
         placeholder="Book dentist appointment"
+        defaultValue={task?.title}
         isRequired
       />
       <TextAreaField
         name="description"
         label="Description (Optional)"
         placeholder="Call Dr. John's office to schedule. Ask if Thursday afternoons are open."
+        defaultValue={task?.description}
       />
 
-      {/* <DatePicker name="dueDate" label="Due date" className="max-w-xs" /> */}
-
-      <RadioGroup name="priority" label="Priority" orientation="horizontal">
+      <RadioGroup
+        name="priority"
+        label="Priority"
+        orientation="horizontal"
+        defaultValue={task?.priority}
+      >
         <Radio value="low">Low</Radio>
         <Radio value="medium">Medium</Radio>
         <Radio value="high">High</Radio>
@@ -62,7 +71,7 @@ function TodoForm({ onClose }: TodoFormProps) {
           Cancel
         </Button>
         <Button variant="brand" type="submit">
-          Create Task
+          {task ? "Save Changes" : "Create Task"}
         </Button>
       </div>
     </form>
