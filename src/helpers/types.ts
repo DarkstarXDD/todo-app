@@ -39,6 +39,17 @@ export interface Task {
   updatedAt: string
 }
 
+// Fields the user provides when creating a task.
+export type CreateTask = Pick<
+  Task,
+  "title" | "description" | "dueDate" | "priority"
+>
+
+// Fields that can change on an existing task (all optional).
+export type UpdateTask = Partial<
+  Pick<Task, "title" | "description" | "dueDate" | "priority" | "tagIds">
+>
+
 export interface Tag {
   id: string
   userId: string

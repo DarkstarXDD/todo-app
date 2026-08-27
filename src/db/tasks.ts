@@ -1,17 +1,20 @@
 import { db } from "@/db/db"
-import { Task } from "@/helpers/types"
+import { CreateTask, UpdateTask } from "@/helpers/types"
 
 // ------------------------- Create Task -------------------------------
-function createTask({ userId, taskData }: { userId: string; taskData: Task }) {
+function createTask({
+  userId,
+  taskData,
+}: {
+  userId: string
+  taskData: CreateTask
+}) {
   const now = new Date().toISOString()
 
   return db.tasks.add({
     id: crypto.randomUUID(),
-    userId: userId,
-    title: taskData.title,
-    description: taskData.description,
-    dueDate: taskData.dueDate,
-    priority: taskData.priority,
+    userId,
+    ...taskData,
     tagIds: [],
     completed: false,
     createdAt: now,
@@ -25,33 +28,34 @@ function getTasksForUser({ userId }: { userId: string }) {
 }
 
 // ------------------------- Update Task -------------------------------
-function updateTask({ taskId, taskData }: { taskId: string; taskData: Task }) {
+function updateTask({
+  taskId,
+  taskData,
+}: {
+  taskId: string
+  taskData: UpdateTask
+}) {
   const now = new Date().toISOString()
 
-  return db.tasks.update(taskId, {
-    title: taskData.title,
-    description: taskData.description,
-    dueDate: taskData.dueDate,
-    priority: taskData.priority,
-    tagIds: taskData.tagIds,
-    updatedAt: now,
-  })
+  return db.tasks.update(taskId, { ...taskData, updatedAt: now })
 }
 
 // ------------------------- Toggle Task Completion -------------------------------
 function toggleTaskCompleted({
-  id,
+  taskId,
   isCompleted,
 }: {
-  id: string
+  taskId: string
   isCompleted: boolean
 }) {
-  return db.tasks.update(id, { completed: isCompleted })
+  const now = new Date().toISOString()
+
+  return db.tasks.update(taskId, { completed: isCompleted, updatedAt: now })
 }
 
 // ------------------------- Delete Task -------------------------------
-function deleteTask({ id }: { id: string }) {
-  return db.tasks.delete(id)
+function deleteTask({ taskId }: { taskId: string }) {
+  return db.tasks.delete(taskId)
 }
 
 export {
