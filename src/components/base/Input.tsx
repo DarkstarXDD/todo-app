@@ -1,5 +1,3 @@
-"use client"
-
 import { type Ref, type ReactNode, useContext } from "react"
 import { composeRenderProps } from "react-aria-components/composeRenderProps"
 import {
