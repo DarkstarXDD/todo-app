@@ -10,14 +10,14 @@ import { TextAreaField } from "@/components/base/TextArea"
 import { TextField } from "@/components/base/TextField"
 import { createTask, updateTask } from "@/db/tasks"
 
-interface TodoFormProps {
+interface TaskFormProps {
   userId: string
   /** When present, the form edits this task instead of creating one */
   task?: Task
   onClose?: () => void
 }
 
-function TodoForm({ userId, task, onClose }: TodoFormProps) {
+function TaskForm({ userId, task, onClose }: TaskFormProps) {
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
 
@@ -89,4 +89,4 @@ function TodoForm({ userId, task, onClose }: TodoFormProps) {
   )
 }
 
-export default TodoForm
+export default TaskForm

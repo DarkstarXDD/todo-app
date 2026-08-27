@@ -17,7 +17,7 @@ import TodoForm from "@/components/tasks/TaskForm"
 import { toggleTaskCompleted, deleteTask } from "@/db/tasks"
 import { cn } from "@/lib/utils"
 
-export default function TodoItem({ task }: { task: Task }) {
+function TaskItem({ task }: { task: Task }) {
   const [isEditOpen, setIsEditOpen] = useState(false)
 
   return (
@@ -97,3 +97,5 @@ export default function TodoItem({ task }: { task: Task }) {
     </div>
   )
 }
+
+export default TaskItem
