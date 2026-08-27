@@ -11,12 +11,12 @@ import {
   FieldError,
   type ErrorMessage,
 } from "@/components/base/FieldHelpers"
-import { Input } from "@/components/base/Input"
+import { TextArea } from "@/components/base/Input"
 import { cn } from "@/lib/utils"
 
-interface TextFieldProps extends Omit<AriaTextFieldProps, "children"> {
+interface TextAreaFieldProps extends Omit<AriaTextFieldProps, "children"> {
   /** Ref to the underlying `<input>` element. */
-  ref?: Ref<HTMLInputElement>
+  ref?: Ref<HTMLTextAreaElement>
   label?: ReactNode
   description?: ReactNode
   errorMessage?: ErrorMessage
@@ -25,7 +25,7 @@ interface TextFieldProps extends Omit<AriaTextFieldProps, "children"> {
   placeholder?: string
 }
 
-function TextField({
+function TextAreaField({
   ref,
   label,
   description,
@@ -34,7 +34,7 @@ function TextField({
   trailingIcon,
   placeholder,
   ...props
-}: TextFieldProps) {
+}: TextAreaFieldProps) {
   return (
     <AriaTextField
       {...props}
@@ -43,7 +43,7 @@ function TextField({
       )}
     >
       {label && <FieldLabel>{label}</FieldLabel>}
-      <Input
+      <TextArea
         ref={ref}
         placeholder={placeholder}
         leadingIcon={leadingIcon}
@@ -55,4 +55,4 @@ function TextField({
   )
 }
 
-export { TextField, type TextFieldProps }
+export { TextAreaField, type TextAreaFieldProps }

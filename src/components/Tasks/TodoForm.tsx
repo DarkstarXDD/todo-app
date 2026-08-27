@@ -6,6 +6,7 @@ import type { Todo } from "@/helpers/types"
 import { Button } from "@/components/base/Button"
 // import { DatePicker } from "@/components/base/DatePicker"
 import { RadioGroup, Radio } from "@/components/base/RadioGroup"
+import { TextAreaField } from "@/components/base/TextArea"
 import { TextField } from "@/components/base/TextField"
 
 interface TodoFormProps {
@@ -42,7 +43,7 @@ function TodoForm({ onClose }: TodoFormProps) {
         placeholder="Book dentist appointment"
         isRequired
       />
-      <TextField
+      <TextAreaField
         name="description"
         label="Description (Optional)"
         placeholder="Call Dr. John's office to schedule. Ask if Thursday afternoons are open."
@@ -50,13 +51,7 @@ function TodoForm({ onClose }: TodoFormProps) {
 
       {/* <DatePicker name="dueDate" label="Due date" className="max-w-xs" /> */}
 
-      <RadioGroup
-        name="priority"
-        label="Priority"
-        orientation="horizontal"
-        defaultValue="none"
-      >
-        <Radio value="none">None</Radio>
+      <RadioGroup name="priority" label="Priority" orientation="horizontal">
         <Radio value="low">Low</Radio>
         <Radio value="medium">Medium</Radio>
         <Radio value="high">High</Radio>
