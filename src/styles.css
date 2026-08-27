@@ -66,4 +66,8 @@
 
   --outline-color-brand: var(--color-sky-600);
   --outline-color-error: var(--color-red-700);
+
+  --color-priority-low: var(--color-green-700);
+  --color-priority-medium: var(--color-amber-700);
+  --color-priority-high: var(--color-red-700);
 }

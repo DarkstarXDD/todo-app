@@ -1,21 +1,23 @@
+import { parseDate } from "@internationalized/date"
 import React from "react"
 
 import type { Task, Priority } from "@/helpers/types"
 
 import { Button } from "@/components/base/Button"
+import { DatePicker } from "@/components/base/DatePicker"
 import { RadioGroup, Radio } from "@/components/base/RadioGroup"
 import { TextAreaField } from "@/components/base/TextArea"
 import { TextField } from "@/components/base/TextField"
 import { createTask, updateTask } from "@/db/tasks"
 
-interface TodoFormProps {
+interface TaskFormProps {
   userId: string
   /** When present, the form edits this task instead of creating one */
   task?: Task
   onClose?: () => void
 }
 
-function TodoForm({ userId, task, onClose }: TodoFormProps) {
+function TaskForm({ userId, task, onClose }: TaskFormProps) {
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
 
@@ -23,11 +25,14 @@ function TodoForm({ userId, task, onClose }: TodoFormProps) {
     const title = String(formData.get("title") ?? "").trim()
     const description = String(formData.get("description") ?? "").trim()
     const priority = formData.get("priority") as Priority | null
+    // DatePicker submits an ISO 8601 string (empty when no date is chosen).
+    const dueDate = formData.get("dueDate") as string | null
 
     const taskData = {
       title,
       description: description || undefined,
       priority: priority || undefined,
+      dueDate: dueDate || undefined,
     }
 
     if (task) {
@@ -43,16 +48,22 @@ function TodoForm({ userId, task, onClose }: TodoFormProps) {
     <form className="mt-5 grid gap-4" onSubmit={handleSubmit}>
       <TextField
         name="title"
-        label="Title"
+        label="Title (required)"
         placeholder="Book dentist appointment"
         defaultValue={task?.title}
         isRequired
       />
       <TextAreaField
         name="description"
-        label="Description (Optional)"
+        label="Description"
         placeholder="Call Dr. John's office to schedule. Ask if Thursday afternoons are open."
         defaultValue={task?.description}
+      />
+
+      <DatePicker
+        name="dueDate"
+        label="Due Date"
+        defaultValue={task?.dueDate ? parseDate(task.dueDate) : undefined}
       />
 
       <RadioGroup
@@ -78,4 +89,4 @@ function TodoForm({ userId, task, onClose }: TodoFormProps) {
   )
 }
 
-export default TodoForm
+export default TaskForm

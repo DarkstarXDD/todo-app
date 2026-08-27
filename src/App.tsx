@@ -10,19 +10,26 @@ import {
   Modal,
   ModalTrigger,
 } from "@/components/base/Modal"
-import TodoForm from "@/components/Tasks/TodoForm"
-import TodoItem from "@/components/Tasks/TodoItem"
-import ToolBar from "@/components/Tasks/ToolBar"
+import TodoForm from "@/components/tasks/TaskForm"
+import TodoItem from "@/components/tasks/TaskItem"
+import ToolBar from "@/components/tasks/ToolBar"
 import { getTasksForUser } from "@/db/tasks"
 import { applyTaskFilters } from "@/helpers/tasks"
 import { useTaskFilters } from "@/hooks/useTaskFilters"
 import { DEV_USER_ID } from "@/lib/currentUser"
 
 export default function App() {
-  const tasks = useLiveQuery(() => getTasksForUser({ userId: DEV_USER_ID })) ?? []
-  const { search, sort, priority } = useTaskFilters()
+  const tasks =
+    useLiveQuery(() => getTasksForUser({ userId: DEV_USER_ID })) ?? []
 
-  const visibleTasks = applyTaskFilters(tasks, { search, sort, priority })
+  const { search, sort, priority, hideCompleted } = useTaskFilters()
+
+  const visibleTasks = applyTaskFilters(tasks, {
+    search,
+    sort,
+    priority,
+    hideCompleted,
+  })
   const remainingTaskCount = tasks.filter((task) => !task.completed).length
 
   return (

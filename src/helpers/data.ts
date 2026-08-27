@@ -1,6 +1,4 @@
-import { Todo } from "@/helpers/types"
-
-export const initialTodos: Todo[] = [
+export const initialTodos = [
   {
     id: "1",
     taskTitle: "Book dentist appointment",

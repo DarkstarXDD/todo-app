@@ -35,18 +35,25 @@ function comparatorFor(sort: SortKey): (a: Task, b: Task) => number {
   }
 }
 
-// Filters by priority, then by search string, and then sorts.
+// Filters by completion, priority, and search string, then sorts.
 function applyTaskFilters(
   tasks: Task[],
   {
     search,
     sort,
     priority,
-  }: { search: string; sort: SortKey; priority: PriorityFilter }
+    hideCompleted,
+  }: {
+    search: string
+    sort: SortKey
+    priority: PriorityFilter
+    hideCompleted: boolean
+  }
 ): Task[] {
   const query = search.trim().toLowerCase()
 
   return tasks
+    .filter((task) => !hideCompleted || !task.completed)
     .filter((task) => priority === "all" || task.priority === priority)
     .filter((task) => task.title.toLowerCase().includes(query))
     .sort(comparatorFor(sort))
