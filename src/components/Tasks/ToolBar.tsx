@@ -1,23 +1,14 @@
 import { Search } from "lucide-react"
-import { useQueryState, parseAsStringEnum } from "nuqs"
 
 import { SearchField } from "@/components/base/SearchField"
 import { Select, SelectItem } from "@/components/base/Select"
 import { ToggleButton, ToggleButtonGroup } from "@/components/base/ToggleButton"
 import { SORT_KEYS, PRIORITY_KEYS } from "@/helpers/types"
+import { useTaskFilters } from "@/hooks/useTaskFilters"
 
 function ToolBar() {
-  const [search, setSearch] = useQueryState("q", { defaultValue: "" })
-
-  const [sort, setSort] = useQueryState(
-    "sort",
-    parseAsStringEnum([...SORT_KEYS]).withDefault("createdDate")
-  )
-
-  const [priority, setPriority] = useQueryState(
-    "priority",
-    parseAsStringEnum([...PRIORITY_KEYS]).withDefault("all")
-  )
+  const { search, setSearch, sort, setSort, priority, setPriority } =
+    useTaskFilters()
 
   return (
     <div className="@container flex flex-col justify-between gap-4 md:flex-row md:items-end">
