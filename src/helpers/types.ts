@@ -26,6 +26,9 @@ export interface User {
   updatedAt: string
 }
 
+// Fields provided when creating a user.
+export type CreateUser = Pick<User, "username" | "passwordHash" | "salt">
+
 export interface Task {
   id: string
   userId: string
