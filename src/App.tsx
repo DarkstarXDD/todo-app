@@ -11,9 +11,9 @@ import {
   Modal,
   ModalTrigger,
 } from "@/components/base/Modal"
-import TodoForm from "@/components/todos/TaskForm"
-import TodoItem from "@/components/todos/TaskItem"
-import ToolBar from "@/components/todos/ToolBar"
+import TodoForm from "@/components/tasks/TaskForm"
+import TodoItem from "@/components/tasks/TaskItem"
+import ToolBar from "@/components/tasks/ToolBar"
 import { useAuth } from "@/context/AuthContext"
 import { getTasksForUser } from "@/db/tasks"
 import { applyTaskFilters } from "@/helpers/tasks"
