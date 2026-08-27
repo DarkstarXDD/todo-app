@@ -1,4 +1,4 @@
-import { useQueryState, parseAsStringEnum } from "nuqs"
+import { useQueryState, parseAsStringEnum, parseAsBoolean } from "nuqs"
 
 import { SORT_KEYS, PRIORITY_KEYS } from "@/helpers/types"
 
@@ -15,5 +15,19 @@ export function useTaskFilters() {
     parseAsStringEnum([...PRIORITY_KEYS]).withDefault("all")
   )
 
-  return { search, setSearch, sort, setSort, priority, setPriority }
+  const [hideCompleted, setHideCompleted] = useQueryState(
+    "hideCompleted",
+    parseAsBoolean.withDefault(false)
+  )
+
+  return {
+    search,
+    setSearch,
+    sort,
+    setSort,
+    priority,
+    setPriority,
+    hideCompleted,
+    setHideCompleted,
+  }
 }

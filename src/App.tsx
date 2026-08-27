@@ -21,9 +21,15 @@ import { DEV_USER_ID } from "@/lib/currentUser"
 export default function App() {
   const tasks =
     useLiveQuery(() => getTasksForUser({ userId: DEV_USER_ID })) ?? []
-  const { search, sort, priority } = useTaskFilters()
 
-  const visibleTasks = applyTaskFilters(tasks, { search, sort, priority })
+  const { search, sort, priority, hideCompleted } = useTaskFilters()
+
+  const visibleTasks = applyTaskFilters(tasks, {
+    search,
+    sort,
+    priority,
+    hideCompleted,
+  })
   const remainingTaskCount = tasks.filter((task) => !task.completed).length
 
   return (
