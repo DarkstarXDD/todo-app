@@ -1,10 +1,13 @@
 "use client"
 
-// import { ChevronRight, ChevronLeft } from "@untitledui/icons"
+import { ChevronRight, ChevronLeft } from "lucide-react"
 import { useContext, type ComponentProps } from "react"
 import { composeRenderProps } from "react-aria-components"
 import {
   Calendar as AriaCalendar,
+  CalendarGrid as AriaCalendarGrid,
+  CalendarGridHeader as AriaCalendarGridHeader,
+  CalendarGridBody as AriaCalendarGridBody,
   CalendarHeading as AriaCalendarHeading,
   CalendarHeaderCell as AriaCalendarHeaderCell,
   CalendarCell as AriaCalendarCell,
@@ -30,11 +33,27 @@ function Calendar<T extends AriaDateValue>(props: AriaCalendarProps<T>) {
       className={composeRenderProps(props.className, (className) =>
         cn(
           "group flex h-90 w-min max-w-2xl flex-col gap-3 overflow-x-auto px-4 py-3.5",
-          !isWithinPopover && "ring-secondary rounded-2xl p-5 shadow-sm ring",
+          !isWithinPopover &&
+            "border-secondary rounded-2xl border p-5 shadow-sm",
           className
         )
       )}
-    />
+    >
+      <CalendarHeader>
+        <Previous />
+        <CalendarHeading />
+        <Next />
+      </CalendarHeader>
+
+      <AriaCalendarGrid>
+        <AriaCalendarGridHeader>
+          {(day) => <CalendarHeaderCell>{day}</CalendarHeaderCell>}
+        </AriaCalendarGridHeader>
+        <AriaCalendarGridBody>
+          {(date) => <CalendarCell date={date} />}
+        </AriaCalendarGridBody>
+      </AriaCalendarGrid>
+    </AriaCalendar>
   )
 }
 
@@ -61,8 +80,7 @@ function Previous(props: ButtonProps) {
         cn("px-3 py-1.5", className)
       )}
     >
-      {/* <ChevronLeft /> */}
-      <p>X</p>
+      <ChevronLeft />
     </Button>
   )
 }
@@ -78,8 +96,7 @@ function Next(props: ButtonProps) {
         cn("px-3 py-1.5", className)
       )}
     >
-      {/* <ChevronRight /> */}
-      <p>X</p>
+      <ChevronRight />
     </Button>
   )
 }
@@ -134,8 +151,7 @@ function CalendarCell(props: AriaCalendarCellProps) {
           (rp.isFocused || rp.isFocusVisible || rp.isHovered || rp.isPressed) &&
             "bg-focused",
 
-          rp.isSelected &&
-            "surface-brand depth-gradient depth-light-strip text-white",
+          rp.isSelected && "bg-brand text-white",
 
           (rp.isDisabled || rp.isOutsideMonth) && "text-disabled",
           className
@@ -149,32 +165,4 @@ function CalendarCell(props: AriaCalendarCellProps) {
   )
 }
 
-export {
-  Calendar,
-  CalendarHeader,
-  Previous,
-  Next,
-  CalendarHeading,
-  CalendarHeaderCell,
-  CalendarCell,
-  type AriaCalendarProps as CalendarProps,
-  type CalendarHeaderProps,
-  type ButtonProps,
-  type AriaCalendarHeadingProps as CalendarHeadingProps,
-  type AriaCalendarHeaderCellProps as CalendarHeaderCellProps,
-  type AriaCalendarCellProps as CalendarCellProps,
-  type AriaDateValue as DateValue,
-}
-
-export {
-  CalendarMonthPicker,
-  CalendarYearPicker,
-  CalendarGrid,
-  CalendarGridHeader,
-  CalendarGridBody,
-  type CalendarMonthPickerProps,
-  type CalendarYearPickerProps,
-  type CalendarGridProps,
-  type CalendarGridHeaderProps,
-  type CalendarGridBodyProps,
-} from "react-aria-components/Calendar"
+export { Calendar, type AriaCalendarProps as CalendarProps }
