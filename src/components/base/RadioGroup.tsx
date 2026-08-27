@@ -54,7 +54,7 @@ function RadioGroup({
           <FieldError>{errorMessage}</FieldError>
           <div
             className={cn(
-              "group-orientation-horizontal:flex-row mt-4 flex flex-col items-start justify-start gap-3"
+              "group-orientation-horizontal:flex-row mt-4 flex flex-col flex-wrap items-start justify-start gap-3"
             )}
           >
             {resolved}

@@ -1,32 +1,34 @@
-"use client"
-
-import { composeRenderProps } from "react-aria-components/composeRenderProps"
+import { composeRenderProps } from "react-aria-components"
 import {
+  MenuTrigger,
   Menu as AriaMenu,
   MenuItem as AriaMenuItem,
   type MenuProps as AriaMenuProps,
   type MenuItemProps as AriaMenuItemProps,
 } from "react-aria-components/Menu"
 
+import { Popover } from "@/components/base/Popover"
 import { cn } from "@/lib/utils"
 
-// --------------------------- Menu ------------------------------
-
+// ---------------------------- Menu ------------------------------
 function Menu<T>(props: AriaMenuProps<T>) {
   return (
-    <AriaMenu
-      {...props}
-      className={composeRenderProps(props.className, (className) =>
-        cn("grid gap-0.5 outline-none", className)
-      )}
-    />
+    <Popover>
+      <AriaMenu
+        {...props}
+        className={composeRenderProps(props.className, (className) =>
+          cn("grid gap-0.5 outline-none", className)
+        )}
+      />
+    </Popover>
   )
 }
 
 // ---------------------------- Menu Item ------------------------------
-function MenuItem({ textValue, children, ...props }: AriaMenuItemProps) {
+function MenuItem({ textValue, ...props }: AriaMenuItemProps) {
   const textValueConstructed =
-    textValue || (typeof children === "string" ? children : undefined)
+    textValue ||
+    (typeof props.children === "string" ? props.children : undefined)
 
   return (
     <AriaMenuItem
@@ -35,11 +37,11 @@ function MenuItem({ textValue, children, ...props }: AriaMenuItemProps) {
       className={composeRenderProps(props.className, (className, rp) =>
         cn(
           "group text-primary relative text-sm font-normal",
-          "grid grid-cols-[auto_1fr]",
+          "grid grid-cols-[auto_1fr] gap-2",
           "rounded-lg px-2 py-1.5",
           "cursor-pointer",
           "outline-none",
-          "[&_svg:not([class*='text-'])]:text-secondary",
+          "[&_svg:not([class*='text-'])]:text-tertiary",
           rp.isDisabled &&
             "text-disabled [&_svg:not([class*='text-'])]:text-fg-disabled cursor-not-allowed",
           (rp.isFocusVisible || rp.isHovered || rp.isPressed) && "bg-focused",
@@ -50,6 +52,4 @@ function MenuItem({ textValue, children, ...props }: AriaMenuItemProps) {
   )
 }
 
-export { Menu, MenuItem, type AriaMenuProps as MenuProps }
-export { MenuTrigger, SubmenuTrigger } from "react-aria-components/Menu"
-export { Popover, type PopoverProps } from "@/components/base/Popover"
+export { MenuTrigger, Menu, MenuItem }

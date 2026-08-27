@@ -13,6 +13,8 @@ import { SearchField } from "@/components/base/SearchField"
 import { Select, SelectItem } from "@/components/base/Select"
 import { ToggleButton, ToggleButtonGroup } from "@/components/base/ToggleButton"
 import TodoForm from "@/components/Tasks/TodoForm"
+import TodoItem from "@/components/Tasks/TodoItem"
+import { initialTodos } from "@/helpers/data"
 
 function handleAddTodo() {
   console.log("Todo Handled!")
@@ -95,7 +97,15 @@ export default function App() {
           </ToggleButtonGroup>
         </div>
 
-        <TodoForm />
+        <div className="grid gap-2">
+          {initialTodos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              taskTitle={todo.taskTitle}
+              taskDescription={todo.taskDescription}
+            />
+          ))}
+        </div>
       </main>
     </div>
   )
