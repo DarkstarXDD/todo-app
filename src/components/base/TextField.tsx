@@ -1,7 +1,7 @@
 import { type Ref, type ReactNode } from "react"
 import { composeRenderProps } from "react-aria-components"
 import {
-  TextField as AriaTexthField,
+  TextField as AriaTextField,
   type TextFieldProps as AriaTextFieldProps,
 } from "react-aria-components/TextField"
 
@@ -36,7 +36,7 @@ function TextField({
   ...props
 }: TextFieldProps) {
   return (
-    <AriaTexthField
+    <AriaTextField
       {...props}
       className={composeRenderProps(props.className, (className) =>
         cn("group grid gap-2 disabled:cursor-not-allowed", className)
@@ -51,7 +51,7 @@ function TextField({
       />
       {description && <FieldDescription>{description}</FieldDescription>}
       <FieldError>{errorMessage}</FieldError>
-    </AriaTexthField>
+    </AriaTextField>
   )
 }
 
