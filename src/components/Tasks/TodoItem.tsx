@@ -11,7 +11,7 @@ export default function TodoItem(props: {
   taskDescription?: string
 }) {
   return (
-    <div className="ring-secondary rounded-lg p-4 ring">
+    <div className="border-secondary rounded-lg border p-4 shadow-xs">
       <div className="flex items-start justify-between gap-4">
         <Checkbox description={props.taskDescription}>
           {({ isSelected }) =>
