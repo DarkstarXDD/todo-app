@@ -54,6 +54,8 @@ export interface Tag {
   id: string
   userId: string
   name: string
-  color?: string
   createdAt: string
 }
+
+// Fields the user provides when creating a tag.
+export type CreateTag = Pick<Tag, "name">
